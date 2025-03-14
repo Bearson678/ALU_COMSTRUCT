@@ -1,0 +1,91 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2023.2 (win64) Build 4029153 Fri Oct 13 20:14:34 MDT 2023
+| Date         : Fri Mar 14 21:29:11 2025
+| Host         : LAPTOP-GCI89HDV running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file alchitry_top_control_sets_placed.rpt
+| Design       : alchitry_top
+| Device       : xc7a35t
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Total control sets                                       |    13 |
+|    Minimum number of control sets                        |    13 |
+|    Addition due to synthesis replication                 |     0 |
+|    Addition due to physical synthesis replication        |     0 |
+| Unused register locations in slices containing registers |    34 |
++----------------------------------------------------------+-------+
+* Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
+** Run report_qor_suggestions for automated merging and remapping suggestions
+
+
+2. Histogram
+------------
+
++--------------------+-------+
+|       Fanout       | Count |
++--------------------+-------+
+| Total control sets |    13 |
+| >= 0 to < 4        |     0 |
+| >= 4 to < 6        |     1 |
+| >= 6 to < 8        |     1 |
+| >= 8 to < 10       |     0 |
+| >= 10 to < 12      |     0 |
+| >= 12 to < 14      |     0 |
+| >= 14 to < 16      |     0 |
+| >= 16              |    11 |
++--------------------+-------+
+* Control sets can be remapped at either synth_design or opt_design
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |              18 |            9 |
+| No           | No                    | Yes                    |               0 |            0 |
+| No           | Yes                   | No                     |               4 |            3 |
+| Yes          | No                    | No                     |               0 |            0 |
+| Yes          | No                    | Yes                    |               0 |            0 |
+| Yes          | Yes                   | No                     |             200 |           89 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++----------------+----------------------------------------------------------------------------+-----------------------------------------------------------------------------+------------------+----------------+--------------+
+|  Clock Signal  |                                Enable Signal                               |                               Set/Reset Signal                              | Slice Load Count | Bel Load Count | Bels / Slice |
++----------------+----------------------------------------------------------------------------+-----------------------------------------------------------------------------+------------------+----------------+--------------+
+|  clk_IBUF_BUFG |                                                                            | reset_cond/M_reset_cond_in                                                  |                3 |              4 |         1.33 |
+|  clk_IBUF_BUFG | alu_manual/D_alufn_d                                                       | reset_cond/Q[0]                                                             |                2 |              6 |         3.00 |
+|  clk_IBUF_BUFG | alu_manual/D_asecondthalf_d                                                | reset_cond/Q[0]                                                             |               10 |             16 |         1.60 |
+|  clk_IBUF_BUFG | alu_manual/D_bfirsthalf_d                                                  | reset_cond/Q[0]                                                             |               11 |             16 |         1.45 |
+|  clk_IBUF_BUFG | alu_manual/D_afirsthalf_d                                                  | reset_cond/Q[0]                                                             |               11 |             16 |         1.45 |
+|  clk_IBUF_BUFG |                                                                            |                                                                             |                9 |             18 |         2.00 |
+|  clk_IBUF_BUFG | alu_manual/forLoop_idx_0_521510260[4].io_button_cond/sel                   | alu_manual/forLoop_idx_0_521510260[4].io_button_cond/sync/clear             |                5 |             20 |         4.00 |
+|  clk_IBUF_BUFG | alu_manual/forLoop_idx_0_521510260[0].io_button_cond/D_ctr_q[0]_i_2_n_0    | alu_manual/forLoop_idx_0_521510260[0].io_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             20 |         4.00 |
+|  clk_IBUF_BUFG | alu_manual/forLoop_idx_0_521510260[1].io_button_cond/D_ctr_q[0]_i_2__0_n_0 | alu_manual/forLoop_idx_0_521510260[1].io_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             20 |         4.00 |
+|  clk_IBUF_BUFG | alu_manual/forLoop_idx_0_521510260[2].io_button_cond/D_ctr_q[0]_i_2__1_n_0 | alu_manual/forLoop_idx_0_521510260[2].io_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             20 |         4.00 |
+|  clk_IBUF_BUFG | alu_manual/forLoop_idx_0_521510260[3].io_button_cond/D_ctr_q[0]_i_2__2_n_0 | alu_manual/forLoop_idx_0_521510260[3].io_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             20 |         4.00 |
+|  clk_IBUF_BUFG | alu_manual/D_bsecondhalf_d                                                 | reset_cond/Q[0]                                                             |               11 |             22 |         2.00 |
+|  clk_IBUF_BUFG | alu_manual/D_result_d                                                      | reset_cond/Q[0]                                                             |               19 |             24 |         1.26 |
++----------------+----------------------------------------------------------------------------+-----------------------------------------------------------------------------+------------------+----------------+--------------+
+
+
