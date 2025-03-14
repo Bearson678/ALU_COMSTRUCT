@@ -1,0 +1,134 @@
+module alu_manual_tester#(
+    CLK_FREQ = 1000000000) 
+(
+    input clk,  // clock
+    input rst,  // reset
+    input io_button[5],
+    input io_dip[3][8],
+    output io_led[3][8],
+    output io_segment[8],
+    output io_select[4],
+    output led[8]
+) {
+   enum States{
+        IDLE,
+        STORE16AFIRST,
+        STORE16ALAST,
+        STORE16BFIRST,
+        STORE16BLAST,
+        SETALU,
+        DISPLAY
+
+        
+    }
+
+    const CLK_FREQONE = $is_sim() ? 1000: 1000000000
+    alu alu
+    .clk(clk){
+        edge_detector io_button_edge[5](#RISE(5x{{1}}),#FALL(5x{{1}}))
+        button_conditioner io_button_cond[5](#CLK_FREQ(5x{{CLK_FREQONE}}))
+
+        .rst(rst){
+            dff states[$width(States)](#INIT(States.IDLE))
+            dff afirsthalf[16]
+            dff asecondthalf[16]
+            dff bfirsthalf[16]
+            dff bsecondhalf[16]
+            dff alufn[6]
+            dff result[32](#INIT(32b0))
+        }
+    }
+    always {
+        // implement alu tester logic here
+
+        
+        alu.a = c{afirsthalf.q,asecondthalf.q}
+        alu.b = c{bfirsthalf.q,bsecondhalf.q}
+        alu.alufn = alufn.q
+        io_led = {result.q[31:24],result.q[23:16],result.q[7:0]}
+        io_segment = 0
+        io_select = 4hF
+        led = c{5b0,alu.z,alu.v,alu.n}
+        //dff default value, to be changed in switch case
+        afirsthalf.d = afirsthalf.q
+        asecondthalf.d = asecondthalf.q
+        bfirsthalf.d = bfirsthalf.q
+        bsecondhalf.d = bsecondhalf.q
+        alufn.d = alufn.q
+        result.d = result.q
+        
+        states.d = states.q
+        io_button_cond.in = io_button[4:0]
+        io_button_edge.in = io_button_cond.out
+
+        case(states.q){
+            States.IDLE:
+            if (io_button_edge.out[0]){
+            states.d = States.STORE16AFIRST
+                }
+            else if (io_button_edge.out[1]){
+            states.d = States.STORE16ALAST
+                }
+            else if (io_button_edge.out[2]){
+            states.d = States.STORE16BFIRST
+            }
+            else if (io_button_edge.out[4]){
+            states.d = States.STORE16BLAST
+            }
+            else if (io_button_edge.out[3]){
+            states.d = States.SETALU
+                }
+            
+            States.STORE16AFIRST:
+            afirsthalf.d = c{io_dip[1],io_dip[0]}
+            result.d = c{io_dip[1],io_dip[0]}
+            states.d = States.IDLE
+            
+            States.STORE16ALAST:
+            asecondthalf.d = c{io_dip[1],io_dip[0]}
+            result.d = c{afirsthalf.q,io_dip[1],io_dip[0]}
+            states.d = States.IDLE
+            
+            States.STORE16BFIRST:
+            bfirsthalf.d = c{io_dip[1],io_dip[0]}
+            result.d = c{io_dip[1],io_dip[0]}
+            states.d = States.IDLE
+            
+            States.STORE16BLAST:
+            bsecondhalf.d = c{io_dip[1],io_dip[0]}
+            result.d = c{bfirsthalf.q,io_dip[1],io_dip[0]}
+            states.d = States.IDLE
+            
+            States.SETALU:
+            alufn.d = io_dip[2][5:0]
+            states.d = States.DISPLAY
+            
+            States.DISPLAY:
+            result.d = alu.out
+            states.d = States.IDLE
+            
+        }
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
