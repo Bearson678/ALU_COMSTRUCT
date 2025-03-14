@@ -1,5 +1,5 @@
 module alu_manual_tester#(
-    CLK_FREQ = 1000) 
+    CLK_FREQ = 1000000000) 
 (
     input clk,  // clock
     input rst,  // reset
