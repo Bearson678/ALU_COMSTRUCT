@@ -1,0 +1,79 @@
+module alu (
+    input a[32],
+    input b[32],
+    input alufn[6],
+    output out[32],
+    output z,
+    output v,
+    output n
+) {
+    adder adder1(#SIZE(32));
+    compare compare1;
+    boolean boolean1;
+    shifter shifter1;
+    multiplier multiplier1
+    mux_4 mux4_final32[32]
+    mux_4 mux4_final32_1[32]
+    divider divider1
+    always {
+        // alu.luc body
+    adder1.a = a;
+    adder1.b = b;
+    adder1.alufn_signal = alufn;
+
+    z = adder1.z;
+    v = adder1.v;
+    n = adder1.n;
+
+    compare1.z = adder1.z
+    compare1.v = adder1.v
+    compare1.n = adder1.n
+    compare1.alufn = alufn
+    
+    boolean1.a = a
+    boolean1.b = b
+    boolean1.alufn = alufn
+        
+    shifter1.a = a
+    shifter1.b = b[4:0]
+    shifter1.alufn = alufn
+        
+    multiplier1.a = a
+    multiplier1.b = b
+        
+    divider1.a = a
+    divider1.b = b
+        
+        
+    mux4_final32_1.s0 = 32x{alufn[0]}
+    mux4_final32_1.s1 = 32x{alufn[1]}
+    mux4_final32.s0 = 32x{alufn[4]}
+    mux4_final32.s1 = 32x{alufn[5]}
+        
+    repeat(i,32){
+       mux4_final32_1.in[i][0] = adder1.out[i]
+       mux4_final32_1.in[i][2] = multiplier1.mul[i]
+       mux4_final32_1.in[i][3] = divider1.d[i] //000011
+       mux4_final32_1.in[i][1] = adder1.out[i]
+       mux4_final32.in[i][0] = mux4_final32_1.out[i]
+       mux4_final32.in[i][1] = boolean1.bool[i]
+       mux4_final32.in[i][2] = shifter1.shift[i]
+       if(i == 0){
+          mux4_final32.in[i][3] = compare1.cmp
+        }
+       else{
+          mux4_final32.in[i][3] = 0
+        }
+
+    }
+        
+
+    out = mux4_final32.out
+        
+        
+        
+        
+        
+        
+    }
+}
