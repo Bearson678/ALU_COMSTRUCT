@@ -16,7 +16,8 @@ module alu_manual_tester#(
         STORE16ALAST,
         STORE16BFIRST,
         STORE16BLAST,
-        SETALU
+        SETALU,
+        DISPLAY
 
         
     }
@@ -100,9 +101,11 @@ module alu_manual_tester#(
             
             States.SETALU:
             alufn.d = io_dip[2][5:0]
+            states.d = States.DISPLAY
+            
+            States.DISPLAY:
             result.d = alu.out
             states.d = States.IDLE
-
             
         }
     }
